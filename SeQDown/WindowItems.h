@@ -9,7 +9,7 @@
 // file_filter_map: key = file Type name, value = file extension (seperated by ';')
 // returns: file path if user selected a file, std::nullopt if user cancelled
 // example usage: std::optional<std::string> file_path = OpenFile("Select a file", { {"Text Files", "*.txt"}, {"All Files", "*.*"} });
-std::optional<std::string> ShowOpenFileDialogue(const std::initializer_list<std::pair<std::string, std::string>>& file_filter_map)
+std::optional<std::string> ShowOpenFileDialogue(const std::initializer_list<std::pair<std::string, std::string>>& file_filter_map , HWND parent = nullptr)
 {
     OPENFILENAME ofn;
     //maximum length of a file name
@@ -17,7 +17,7 @@ std::optional<std::string> ShowOpenFileDialogue(const std::initializer_list<std:
 
     ZeroMemory(&ofn, sizeof(ofn));
     ofn.lStructSize = sizeof(ofn);
-    ofn.hwndOwner = NULL;
+	ofn.hwndOwner = parent;
     ofn.lpstrFile = szFile;
     ofn.lpstrFile[0] = '\0';
 	ofn.nMaxFile = sizeof(szFile);
@@ -46,13 +46,13 @@ std::optional<std::string> ShowOpenFileDialogue(const std::initializer_list<std:
 }
 
 // returns: directory path if user selected a directory, std::nullopt if user cancelled
-std::optional<std::string> ShowOpenDirectoryDialogue()
+std::optional<std::string> ShowOpenDirectoryDialogue(HWND parent = nullptr)
 {
     // Initialize the BROWSEINFO structure
     BROWSEINFO bi;
     ZeroMemory(&bi, sizeof(bi));
     bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
-    bi.hwndOwner = nullptr; // hWnd is a handle to the parent window
+    bi.hwndOwner = parent; // hWnd is a handle to the parent window
     //bi.lpszTitle = _T("Select a directory:");
 
     // Show the dialog box

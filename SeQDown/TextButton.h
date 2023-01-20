@@ -12,10 +12,6 @@ public:
 		:
 		WindowComponent(parent_window, "Button", 0 , WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, Title.c_str(), pos_x, pos_y, width, height, this)
 	{}
-	~TextButton()
-	{
-		DestroyWindow(component_handle);
-	}
 	void PerformCommand(int wparam) override
 	{
 		if (HIWORD(wparam) == BN_CLICKED && OnClick != nullptr)

@@ -47,5 +47,8 @@
     <ClInclude Include="httpClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WindowItems.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

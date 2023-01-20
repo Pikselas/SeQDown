@@ -26,8 +26,8 @@ public:
 		
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, this);
 
-		// perform the download
 		CURLcode res = curl_easy_perform(curl);
+		curl_easy_cleanup(curl);
 		if (res != CURLE_OK)
 		{
 			throw std::runtime_error(curl_easy_strerror(res));

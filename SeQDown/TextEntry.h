@@ -32,7 +32,7 @@ public:
 	{
 		SetWindowText(component_handle, text.c_str());
 	}
-	const std::string& GetText() const
+	const std::string GetText() const
 	{
 		return text;
 	}

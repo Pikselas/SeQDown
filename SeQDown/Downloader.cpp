@@ -1,10 +1,12 @@
 #include "Downloader.h"
 
-Downloader::Downloader(const std::string& file_path, const std::string& dest, const Naming naming, const std::string& extention , const int count)
+Downloader::Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const Naming naming, const std::string& name_last , const int count)
 	: 
 dest(dest) ,
 naming(naming),
-extention(extention),
+last_name(name_last),
+searchStart(searchStart),
+searchEnd(searchEnd),
 count(count)
 {
 	file.open(file_path);
@@ -24,7 +26,7 @@ Downloader::~Downloader()
 }
 
 std::optional<std::string> Downloader::GetNextLink(const std::string& searchBegin, const std::string& searchEnd)
-{
+{	
 	std::istreambuf_iterator<char> start(file);
 	std::istreambuf_iterator<char> end;
 	
@@ -52,6 +54,60 @@ std::optional<std::string> Downloader::GetNextLink(const std::string& searchBegi
 			return Link;
 		}
 	}
-	
 	return std::nullopt;
+}
+
+void Downloader::Download()
+{
+	(*this)();
+}
+
+void Downloader::operator()()
+{
+	while (true)
+	{
+		std::string FileName;
+		std::string Link;
+		
+		{
+			std::unique_lock<std::mutex> lock(mtx);
+			
+			auto link = GetNextLink(searchStart, searchEnd);
+			if (!link)
+			{
+				break;
+			}
+			Link = *link;
+			switch (naming)
+			{
+			case Naming::SameAsURL:
+				lock.unlock();
+				FileName = std::filesystem::path(Link).filename().string();
+				break;
+			case Naming::CountStart:
+				FileName = std::to_string(count);
+				count++;
+				break;
+			}
+		}
+		FileName += last_name;
+		if (!std::filesystem::exists(FileName))
+		{
+			try
+			{
+				auto Path = std::filesystem::path(dest) / FileName;
+				std::ofstream file(Path, std::ios::binary);
+				httpClient client;
+				client.OnData = [&](std::string_view data)
+				{
+					file << data;
+				};
+				client.Get(Link);
+			}
+			catch (const std::exception& e)
+			{
+				Failed.emplace(FileName,Link);
+			}
+		}
+	}
 }

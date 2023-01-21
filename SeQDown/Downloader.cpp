@@ -1,11 +1,20 @@
 #include "Downloader.h"
 
-Downloader::Downloader(const std::string& file_path)
+Downloader::Downloader(const std::string& file_path, const std::string& dest, const Naming naming, const std::string& extention , const int count)
+	: 
+dest(dest) ,
+naming(naming),
+extention(extention),
+count(count)
 {
 	file.open(file_path);
 	if (!file.is_open())
 	{
 		throw std::runtime_error("Failed to open file");
+	}
+	if (!std::filesystem::exists(dest))
+	{
+		std::filesystem::create_directories(dest);
 	}
 }
 

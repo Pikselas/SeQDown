@@ -14,8 +14,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Window window("SeQDown", 400, 400);
 	
 	Label(window , "Select File Location", 10, 10,130, 20);
-	TextButton textButton(window, "Browse", 210, 39, 100, 25);
-	TextEntry source(window, 10, 40, 200, 25);
+	TextButton textButton(window, "Browse", 250, 39, 130, 25);
+	TextEntry source(window, 20, 40, 230, 25);
 	
 	textButton.OnClick = [&](auto)
 	{
@@ -27,8 +27,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	};
 
 	Label(window, "Select Destination", 10, 70, 120, 20);
-	TextButton textButton2(window, "Browse", 210, 99, 100, 25);
-	TextEntry destination(window, 10, 100, 200, 25);
+	TextButton textButton2(window, "Browse", 250, 99, 130, 25);
+	TextEntry destination(window, 20, 100, 230, 25);
 	
 	textButton2.OnClick = [&](auto)
 	{
@@ -40,10 +40,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	};
 	
 	Label(window, "Parse Link", 10, 130, 110, 20);
-	Label(window, "Start string", 50, 160, 80, 20);
-	TextEntry startStr(window, 140, 160, 100, 25);
-	Label(window, "End string", 50, 195, 80, 20);
-	TextEntry endStr(window, 140, 195, 100, 25);
+	Label(window, "Start string", 15, 160, 80, 20);
+	TextEntry startStr(window, 105, 160, 100, 25);
+	Label(window, "End string", 15, 195, 80, 20);
+	TextEntry endStr(window, 105, 195, 100, 25);
+	Label(window, "Front Link", 220, 160, 80, 20);
+	TextEntry frontLink(window, 230, 185, 150, 25);
 
 	Label(window, "Naming Items", 10, 230, 110, 20);
 	Label(window, "Same as URL?", 50, 260, 100, 20);

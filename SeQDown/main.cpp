@@ -62,8 +62,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	textButton3.OnClick = [&](auto) mutable
 	{
-		Downloader downloader(source.GetText(), destination.GetText(), startStr.GetText(),endStr.GetText());
-		downloader.Download();
+		Downloader downloader
+		(
+			source.GetText(), destination.GetText(), startStr.GetText(), endStr.GetText(),
+			frontLink.GetText(), dropDownSelect.GetSelection() == "Yes" 
+						? 
+			Downloader::Naming::SameAsURL 
+						: 
+			Downloader::Naming::CountStart,
+			last_name.GetText() , std::stoi(count.GetText())
+		);
+			downloader.Download();
 	};
 	
 	Window::MainLoop(Window::ALL_WINDOWS);

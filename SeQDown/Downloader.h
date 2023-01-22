@@ -25,6 +25,7 @@ private:
 	const std::string last_name;
 	const std::string searchStart;
 	const std::string searchEnd;
+	const std::string frontLink;
 	int count;
 private:
 	std::mutex mtx;
@@ -33,7 +34,7 @@ private:
 private:
 	void operator()();
 public:
-	Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd , const Naming naming = Naming::SameAsURL, const std::string& name_last = "", const int count = 0);
+	Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd , const std::string& frontLink = "", const Naming naming = Naming::SameAsURL, const std::string& name_last = "", const int count = 0);
 	~Downloader();
 public:
 	std::optional<std::string> GetNextLink(const std::string& searchBegin ,const std::string& searchEnd);

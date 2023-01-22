@@ -1,12 +1,13 @@
 #include "Downloader.h"
 
-Downloader::Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const Naming naming, const std::string& name_last , const int count)
+Downloader::Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const::std::string& frontLink , const Naming naming, const std::string& name_last , const int count)
 	: 
 dest(dest) ,
 naming(naming),
 last_name(name_last),
 searchStart(searchStart),
 searchEnd(searchEnd),
+frontLink(frontLink),
 count(count)
 {
 	file.open(file_path);
@@ -77,7 +78,7 @@ void Downloader::operator()()
 			{
 				break;
 			}
-			Link = *link;
+			Link = frontLink + '/' + *link;
 			switch (naming)
 			{
 			case Naming::SameAsURL:

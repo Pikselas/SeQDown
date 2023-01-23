@@ -5,6 +5,7 @@
 #include"WindowItems.h"
 #include"RangeButton.h"
 #include"DropDownSelect.h"
+#include"ProgressBar.h"
 
 #include"Downloader.h"
 
@@ -13,7 +14,7 @@
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	Window window("SeQDown", 400, 450);
-	
+
 	Label(window , "Select File Location", 10, 10,130, 20);
 	TextButton textButton(window, "Browse", 250, 39, 130, 25);
 	TextEntry source(window, 20, 40, 230, 25);
@@ -86,16 +87,32 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 					Downloader::Naming::CountStart,
 					last_name.GetText(), std::stoi(count.GetText())
 				);
-				for (const auto& err : downloader.Download())
+				Window progress("Progress", 300, 200);
+				ProgressBar progressBar(progress,0, 100 ,10, 10, 280, 25);
+				TextEntry status(progress, 10, 30, 280, 150);
+				for (auto& thrd : downloader.Download())
 				{
-					MessageBox(window.window_handle, err.what(), "Error", MB_ICONERROR);
+					while (!thrd._Is_ready() && progress.IsOpen())
+					{
+						//progress.ChangeTitle("Progress: " + std::to_string(downloader.GetProgress()) + "%");
+						progressBar.SetProgress(downloader.GetProgress());
+						if (auto stat = downloader.GetStatus())
+						{
+							//status.AppendText("\n" + *stat);
+						}
+						progress.ProcessEvents();
+					}
+					if (auto err = thrd.get())
+					{
+						MessageBox(progress.window_handle, err->what(), "Error", MB_ICONERROR);
+					}
 				}
+				MessageBox(progress.window_handle, "Completed", "Information", MB_ICONINFORMATION);
 			}
 			catch (std::exception e)
 			{
 				MessageBox(window.window_handle, e.what(), "Error", MB_ICONERROR);
 			}
-			MessageBox(window.window_handle, "Completed" , "Information", MB_ICONINFORMATION);
 			}).detach();
 	};
 	

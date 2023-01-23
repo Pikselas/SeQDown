@@ -131,20 +131,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\WinExp\WinExp\Window.cpp" />
     <ClCompile Include="Downloader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\WinExp\WinExp\DropDownSelect.h" />
-    <ClInclude Include="..\..\WinExp\WinExp\Label.h" />
-    <ClInclude Include="..\..\WinExp\WinExp\TextButton.h" />
-    <ClInclude Include="..\..\WinExp\WinExp\TextEntry.h" />
-    <ClInclude Include="..\..\WinExp\WinExp\Window.h" />
-    <ClInclude Include="..\..\WinExp\WinExp\WindowComponent.h" />
     <ClInclude Include="Downloader.h" />
+    <ClInclude Include="DropDownSelect.h" />
     <ClInclude Include="httpClient.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="ProgressBar.h" />
     <ClInclude Include="RangeButton.h" />
+    <ClInclude Include="TextButton.h" />
+    <ClInclude Include="TextEntry.h" />
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="WindowComponent.h" />
     <ClInclude Include="WindowItems.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

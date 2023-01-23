@@ -14,7 +14,8 @@ public:
 		: 
 	min_value(min_range) , 
 	max_value(max_range) ,
-	WindowComponent(parent_window , TRACKBAR_CLASS, 0 ,WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS , "TRACKBAR", pos_x, pos_y, width, height, this)
+	current_value(min_range),
+	WindowComponent(parent_window , TRACKBAR_CLASS, 0 ,WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS, "TRACKBAR", pos_x, pos_y, width, height, this)
 	{
 		/*component_handle = CreateWindowEx(0, TRACKBAR_CLASS, "Trackbar Control",
 			WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS,

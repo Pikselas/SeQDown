@@ -28,7 +28,7 @@ public:
 		{
 			if (OnSelect != nullptr)
 			{
-				int index = SendMessage(component_handle, (UINT)CB_GETCURSEL, (WPARAM)0, (LPARAM)0);
+				auto index = (unsigned int) SendMessage(component_handle, (UINT)CB_GETCURSEL, (WPARAM)0, (LPARAM)0);
 				if (index != CB_ERR)
 				{
 					std::vector<char> buffer(GetWindowTextLength(component_handle) + 1);
@@ -52,8 +52,8 @@ public:
 	std::vector<std::string> GetItems() const
 	{
 		std::vector<std::string> items;
-		int count = SendMessage(component_handle, CB_GETCOUNT, 0, 0);
-		for (int i = 0; i < count; i++)
+		auto count = (unsigned int) SendMessage(component_handle, CB_GETCOUNT, 0, 0);
+		for (auto i = 0u; i < count; i++)
 		{
 			std::vector<char> buffer(GetWindowTextLength(component_handle) + 1);
 			SendMessage(component_handle, (UINT)CB_GETLBTEXT, (WPARAM)i, (LPARAM)buffer.data());

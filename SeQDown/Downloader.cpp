@@ -9,6 +9,7 @@ searchStart(searchStart),
 searchEnd(searchEnd),
 use_threads(useThreads),
 frontLink(frontLink),
+file_size(std::filesystem::file_size(file_path)),
 count(count)
 {
 	file.open(file_path);
@@ -43,6 +44,8 @@ std::optional<std::string> Downloader::GetNextLink(const std::string& searchBegi
 	// so we can't use the start iterator anymore to find the end 
 	// and if we use StartPos for searching we need to go back to the StartPos by decrementing the file pointer
 	
+	progress = (file.tellg() * 100) / file_size;
+	
 	std::string Link;
 	
 	while (file.good())
@@ -59,9 +62,27 @@ std::optional<std::string> Downloader::GetNextLink(const std::string& searchBegi
 	return std::nullopt;
 }
 
-std::vector<std::exception> Downloader::Download()
+unsigned char Downloader::GetProgress() const
+{
+	return progress;
+}
+
+std::optional<std::string> Downloader::GetStatus()
+{
+	std::unique_lock<std::mutex> lock(mtx_status);
+	if (!StatusQueue.empty())
+	{
+		auto status = StatusQueue.front();
+		StatusQueue.pop();
+		return status;
+	}
+	return std::nullopt;
+}
+
+std::vector<std::future<std::optional<std::exception>>> Downloader::Download()
 {
 	std::vector<std::future<std::optional<std::exception>>> threads;
+	threads.reserve(use_threads);
 	
 	for (int i = 0; i < use_threads; ++i)
 	{
@@ -78,16 +99,7 @@ std::vector<std::exception> Downloader::Download()
 			return std::nullopt;
 		}));
 	}
-	std::vector<std::exception> errors;
-	for (auto& thread : threads)
-	{
-		auto e = thread.get();
-		if (e)
-		{
-			errors.push_back(*e);
-		}
-	}
-	return errors;
+	return threads;
 }
 
 void Downloader::operator()()
@@ -98,7 +110,7 @@ void Downloader::operator()()
 		std::string Link;
 
 		{
-			std::unique_lock<std::mutex> lock(mtx);
+			std::unique_lock<std::mutex> lock(mtx_file);
 
 			auto link = GetNextLink(searchStart, searchEnd);
 			if (!link)
@@ -130,7 +142,16 @@ void Downloader::operator()()
 				{
 					file << data;
 				};
+				
+				std::unique_lock<std::mutex> lock(mtx_status);
+				StatusQueue.push("Downloading: " + FileName + " from " + Link);
+				lock.unlock();
+				
 				client.Get(Link);
+				
+				lock.lock();
+				StatusQueue.push("Downloaded: " + FileName);
+				lock.unlock();
 			}
 			catch (const std::exception& e)
 			{

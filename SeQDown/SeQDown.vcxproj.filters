@@ -32,9 +32,6 @@
     <ClInclude Include="..\..\WinExp\WinExp\Label.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\WinExp\WinExp\RangeButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\WinExp\WinExp\TextButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -54,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Downloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RangeButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

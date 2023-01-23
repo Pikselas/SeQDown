@@ -138,13 +138,13 @@
   <ItemGroup>
     <ClInclude Include="..\..\WinExp\WinExp\DropDownSelect.h" />
     <ClInclude Include="..\..\WinExp\WinExp\Label.h" />
-    <ClInclude Include="..\..\WinExp\WinExp\RangeButton.h" />
     <ClInclude Include="..\..\WinExp\WinExp\TextButton.h" />
     <ClInclude Include="..\..\WinExp\WinExp\TextEntry.h" />
     <ClInclude Include="..\..\WinExp\WinExp\Window.h" />
     <ClInclude Include="..\..\WinExp\WinExp\WindowComponent.h" />
     <ClInclude Include="Downloader.h" />
     <ClInclude Include="httpClient.h" />
+    <ClInclude Include="RangeButton.h" />
     <ClInclude Include="WindowItems.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

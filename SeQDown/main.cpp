@@ -3,6 +3,7 @@
 #include"TextEntry.h"
 #include"TextButton.h"
 #include"WindowItems.h"
+#include"RangeButton.h"
 #include"DropDownSelect.h"
 
 #include"Downloader.h"
@@ -11,7 +12,7 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	Window window("SeQDown", 400, 400);
+	Window window("SeQDown", 400, 450);
 	
 	Label(window , "Select File Location", 10, 10,130, 20);
 	TextButton textButton(window, "Browse", 250, 39, 130, 25);
@@ -58,15 +59,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Label(window, "Last Name ", 50, 330, 80, 20);
 	TextEntry last_name(window, 140, 330, 100, 25);
 
-	TextButton textButton3(window, "Start", 150, 360, 100, 25);
+	Label t_label(window, "Threads: 1", 35, 373, 75, 20);
+	RangeButton threads(window, 1, 10, 115, 370, 200, 25);
+
+	threads.OnSlide = [&](auto& thr)
+	{
+		t_label.SetText("Threads: " + std::to_string(thr.GetCurrentPos()));
+	};
 	
-	textButton3.OnClick = [&](auto) mutable
+	TextButton textButton3(window, "Start", 150, 410, 100, 25);
+	
+	textButton3.OnClick = [&](auto)
 	{
 		std::thread([&]() 
 			{
 				Downloader downloader
 				(
 					source.GetText(), destination.GetText(), startStr.GetText(), endStr.GetText(),
+					threads.GetCurrentPos(),
 					frontLink.GetText(), dropDownSelect.GetSelection() == "Yes"
 					?
 					Downloader::Naming::SameAsURL

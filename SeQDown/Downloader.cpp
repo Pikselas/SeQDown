@@ -1,12 +1,13 @@
 #include "Downloader.h"
 
-Downloader::Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const::std::string& frontLink , const Naming naming, const std::string& name_last , const int count)
+Downloader::Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const int useThreads, const::std::string& frontLink , const Naming naming, const std::string& name_last , const int count)
 	: 
 dest(dest) ,
 naming(naming),
 last_name(name_last),
 searchStart(searchStart),
 searchEnd(searchEnd),
+use_threads(useThreads),
 frontLink(frontLink),
 count(count)
 {
@@ -60,7 +61,18 @@ std::optional<std::string> Downloader::GetNextLink(const std::string& searchBegi
 
 void Downloader::Download()
 {
-	(*this)();
+	std::vector<std::future<void>> threads;
+	
+	for (int i = 0; i < use_threads; ++i)
+	{
+		threads.emplace_back(std::async(std::launch::async, [&]() {
+			(*this)();
+			}));
+	}
+	for (auto& thread : threads)
+	{
+		thread.wait();
+	}
 }
 
 void Downloader::operator()()

@@ -14,7 +14,7 @@
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	Window window("SeQDown", 400, 450);
-
+	
 	Label(window , "Select File Location", 10, 10,130, 20);
 	TextButton textButton(window, "Browse", 250, 39, 130, 25);
 	TextEntry source(window, 20, 40, 230, 25);
@@ -87,9 +87,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 					Downloader::Naming::CountStart,
 					last_name.GetText(), std::stoi(count.GetText())
 				);
-				Window progress("Progress", 300, 200);
-				ProgressBar progressBar(progress,0, 100 ,10, 10, 280, 25);
-				TextEntry status(progress, 10, 30, 280, 150);
+				Window progress("Progress", 400, 300);
+				ProgressBar progressBar(progress, 0, 100, 10, 10, 380, 25);
+				TextEntry status(progress, 10, 40, 380, 250);
 				for (auto& thrd : downloader.Download())
 				{
 					while (!thrd._Is_ready() && progress.IsOpen())
@@ -98,7 +98,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 						progressBar.SetProgress(downloader.GetProgress());
 						if (auto stat = downloader.GetStatus())
 						{
-							//status.AppendText("\n" + *stat);
+							status.AppendText("\r\n" + *stat + "\r");
 						}
 						progress.ProcessEvents();
 					}

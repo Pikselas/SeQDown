@@ -6,22 +6,16 @@ class TextEntry : public WindowComponent
 {
 public:
 	std::function<void(TextEntry&)> OnTextChange;
-private:
-	std::string text;
 public:
 	TextEntry(WindowT auto& parent_window, int x, int y, int w, int h, const char* default_text = "")
 		: 
-		WindowComponent(parent_window, "EDIT", WS_EX_CLIENTEDGE, WS_CHILD | WS_VISIBLE | ES_LEFT | ES_AUTOHSCROLL, default_text, x, y, w, h , this)
+		WindowComponent(parent_window, "EDIT", WS_EX_CLIENTEDGE, WS_CHILD | WS_VISIBLE | ES_LEFT| ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL, default_text, x, y, w, h , this)
 	{
 	}
 	void PerformCommand(int wparam)
 	{
 		if (HIWORD(wparam) == EN_CHANGE)
 		{
-			int length = GetWindowTextLength(component_handle);
-			std::vector<char> buffer(length + 1);
-			GetWindowText(component_handle, buffer.data(), length + 1);
-			text = buffer.data();
 			if (OnTextChange)
 			{
 				OnTextChange(*this);
@@ -32,8 +26,16 @@ public:
 	{
 		SetWindowText(component_handle, text.c_str());
 	}
+	void AppendText(const std::string& text)
+	{
+		unsigned int nLength = GetWindowTextLength(component_handle);
+		SendMessage(component_handle, EM_SETSEL, (WPARAM)nLength, (LPARAM)nLength);
+		SendMessage(component_handle, EM_REPLACESEL, 0, (LPARAM)text.c_str());
+	}
 	const std::string GetText() const
 	{
-		return text;
+		std::vector<char> text(GetWindowTextLength(component_handle) + 1);
+		GetWindowText(component_handle, (LPSTR)text.data(), text.size());
+		return std::string(text.data());
 	}
 };

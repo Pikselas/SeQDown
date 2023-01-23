@@ -95,7 +95,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			{
 				MessageBox(window.window_handle, e.what(), "Error", MB_ICONERROR);
 			}
-			MessageBox(window.window_handle, "Completed" , "Information", MB_ICONEXCLAMATION);
+			MessageBox(window.window_handle, "Completed" , "Information", MB_ICONINFORMATION);
 			}).detach();
 	};
 	

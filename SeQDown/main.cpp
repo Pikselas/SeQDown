@@ -73,6 +73,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	{
 		std::thread([&]() 
 			{
+			try 
+			{
 				Downloader downloader
 				(
 					source.GetText(), destination.GetText(), startStr.GetText(), endStr.GetText(),
@@ -84,7 +86,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 					Downloader::Naming::CountStart,
 					last_name.GetText(), std::stoi(count.GetText())
 				);
-				downloader.Download();
+				for (const auto& err : downloader.Download())
+				{
+					MessageBox(window.window_handle, err.what(), "Error", MB_ICONERROR);
+				}
+			}
+			catch (std::exception e)
+			{
+				MessageBox(window.window_handle, e.what(), "Error", MB_ICONERROR);
+			}
+			MessageBox(window.window_handle, "Completed" , "Information", MB_ICONEXCLAMATION);
 			}).detach();
 	};
 	

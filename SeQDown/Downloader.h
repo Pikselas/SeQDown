@@ -32,7 +32,7 @@ private:
 private:
 	std::mutex mtx;
 private:
-	std::queue<std::pair<std::string,std::string>> Failed;
+	//std::queue<std::pair<std::string,std::string>> Failed;
 private:
 	void operator()();
 public:
@@ -40,5 +40,5 @@ public:
 	~Downloader();
 public:
 	std::optional<std::string> GetNextLink(const std::string& searchBegin ,const std::string& searchEnd);
-	void Download();
+	std::vector<std::exception> Download();
 };

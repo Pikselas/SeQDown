@@ -59,20 +59,35 @@ std::optional<std::string> Downloader::GetNextLink(const std::string& searchBegi
 	return std::nullopt;
 }
 
-void Downloader::Download()
+std::vector<std::exception> Downloader::Download()
 {
-	std::vector<std::future<void>> threads;
+	std::vector<std::future<std::optional<std::exception>>> threads;
 	
 	for (int i = 0; i < use_threads; ++i)
 	{
-		threads.emplace_back(std::async(std::launch::async, [&]() {
-			(*this)();
-			}));
+		threads.emplace_back(std::async(std::launch::async, [&]() -> std::optional<std::exception> 
+		{
+			try
+			{
+			   (*this)();
+			}
+			catch (std::exception e)
+			{
+				return e;
+			}
+			return std::nullopt;
+		}));
 	}
+	std::vector<std::exception> errors;
 	for (auto& thread : threads)
 	{
-		thread.wait();
+		auto e = thread.get();
+		if (e)
+		{
+			errors.push_back(*e);
+		}
 	}
+	return errors;
 }
 
 void Downloader::operator()()
@@ -81,10 +96,10 @@ void Downloader::operator()()
 	{
 		std::string FileName;
 		std::string Link;
-		
+
 		{
 			std::unique_lock<std::mutex> lock(mtx);
-			
+
 			auto link = GetNextLink(searchStart, searchEnd);
 			if (!link)
 			{
@@ -119,7 +134,8 @@ void Downloader::operator()()
 			}
 			catch (const std::exception& e)
 			{
-				Failed.emplace(FileName,Link);
+				//Failed.emplace(FileName, Link);
+				throw e;
 			}
 		}
 	}

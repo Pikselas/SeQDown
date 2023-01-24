@@ -1,6 +1,7 @@
 #include"Label.h"
 #include"Window.h"
 #include"TextEntry.h"
+#include"TextArea.h"
 #include"TextButton.h"
 #include"WindowItems.h"
 #include"RangeButton.h"
@@ -89,7 +90,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				);
 				Window progress("Progress", 400, 300);
 				ProgressBar progressBar(progress, 0, 100, 10, 10, 380, 25);
-				TextEntry status(progress, 10, 40, 380, 250);
+				TextArea status(progress, 10, 40, 380, 250,false,true);
 				for (auto& thrd : downloader.Download())
 				{
 					while (!thrd._Is_ready() && progress.IsOpen())
@@ -98,7 +99,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 						progressBar.SetProgress(downloader.GetProgress());
 						if (auto stat = downloader.GetStatus())
 						{
-							status.AppendText("\r\n" + *stat + "\r");
+							status.AppendText("\r\n" + *stat);
 						}
 						progress.ProcessEvents();
 					}

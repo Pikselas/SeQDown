@@ -1,17 +1,16 @@
 #pragma once
-#include<vector>
+#include<string>
 #include"WindowComponent.h"
 
-class TextEntry : public WindowComponent
+class TextArea : public WindowComponent
 {
 public:
-	std::function<void(TextEntry&)> OnTextChange;
+	std::function<void(TextArea&)> OnTextChange;
 public:
-	TextEntry(WindowT auto& parent_window, int x, int y, int w, int h, const char* default_text = "")
-		: 
-		WindowComponent(parent_window, "EDIT", WS_EX_CLIENTEDGE, WS_CHILD | WS_VISIBLE | ES_LEFT| ES_AUTOHSCROLL, default_text, x, y, w, h , this)
-	{
-	}
+	TextArea(WindowT auto& parent_window, int x, int y, int w, int h,bool autohScroll = true , bool autovScroll = true, const char* default_text = "")
+		:
+		WindowComponent(parent_window, "EDIT", WS_EX_CLIENTEDGE, WS_CHILD | WS_VISIBLE | ES_LEFT | ES_MULTILINE | (autohScroll? ES_AUTOHSCROLL : 0) | (autovScroll? ES_AUTOVSCROLL : 0), default_text, x, y, w, h, this)
+	{}
 	void PerformCommand(int wparam)
 	{
 		if (HIWORD(wparam) == EN_CHANGE)

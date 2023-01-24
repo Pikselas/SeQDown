@@ -142,6 +142,7 @@
     <ClInclude Include="Label.h" />
     <ClInclude Include="ProgressBar.h" />
     <ClInclude Include="RangeButton.h" />
+    <ClInclude Include="TextArea.h" />
     <ClInclude Include="TextButton.h" />
     <ClInclude Include="TextEntry.h" />
     <ClInclude Include="Window.h" />

@@ -9,7 +9,8 @@ Window::WindowClass::WindowClass()
 	wc.cbSize = sizeof(wc);
 	wc.hInstance = hinst;
 	wc.lpszClassName = classNm;
-	wc.style = CS_DBLCLKS; //Enables window to take double click events
+	wc.style = CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW; //Enables window to take double click events
+	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
 	wc.lpfnWndProc = StaticMessageHandler;
 	//wc.hIcon = static_cast<HICON>(LoadImage(hinst, MAKEINTRESOURCE(IDI_ICON1) , IMAGE_ICON,256 , 256 , 0 ));
 	//wc.hIconSm = static_cast<HICON>(LoadImage(hinst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 256 , 256 , 0));

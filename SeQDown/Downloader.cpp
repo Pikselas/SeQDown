@@ -117,7 +117,11 @@ void Downloader::operator()()
 			{
 				break;
 			}
-			Link = frontLink + '/' + *link;
+			Link = *link;
+			if (!frontLink.empty())
+			{
+				Link = frontLink + '/' + Link;
+			}
 			switch (naming)
 			{
 			case Naming::SameAsURL:

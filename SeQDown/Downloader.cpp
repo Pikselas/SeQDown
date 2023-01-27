@@ -54,7 +54,7 @@ std::optional<std::string> Downloader::GetNextLink(const std::string& searchBegi
 		auto Pos = std::search(Link.rbegin(), Link.rend(), searchEnd.rbegin(), searchEnd.rend());
 		if (Pos != Link.rend())
 		{
-			Link.erase(Pos.base() - 1, Link.end());
+			Link.erase(Pos.base() - searchEnd.size(), Link.end());
 			file.seekg(Pos - Link.rbegin(), std::ios::cur);
 			return Link;
 		}

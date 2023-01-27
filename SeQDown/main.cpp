@@ -69,6 +69,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		t_label.SetText("Threads: " + std::to_string(thr.GetCurrentPos()));
 	};
 	
+	dropDownSelect.OnSelect = [&](auto& dd)
+	{
+		if (dd.GetSelection() == "Yes")
+		{
+			count.SetText("0");
+		}
+	};
+	
 	TextButton textButton3(window, "Start", 150, 410, 100, 25);
 	
 	textButton3.OnClick = [&](auto)
@@ -95,7 +103,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				{
 					while (!thrd._Is_ready() && progress.IsOpen())
 					{
-						//progress.ChangeTitle("Progress: " + std::to_string(downloader.GetProgress()) + "%");
 						progressBar.SetProgress(downloader.GetProgress());
 						if (auto stat = downloader.GetStatus())
 						{

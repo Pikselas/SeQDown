@@ -31,10 +31,14 @@ public:
 				auto index = (unsigned int) SendMessage(component_handle, (UINT)CB_GETCURSEL, (WPARAM)0, (LPARAM)0);
 				if (index != CB_ERR)
 				{
-					std::vector<char> buffer(GetWindowTextLength(component_handle) + 1);
-					SendMessage(component_handle, (UINT)CB_GETLBTEXT, (WPARAM)index, (LPARAM)buffer.data());
-					current_selection = buffer.data();
-					OnSelect(*this);
+					int len = SendMessage(component_handle, CB_GETLBTEXTLEN, index, 0);
+					if (len != CB_ERR)
+					{
+						std::vector<char> buffer(len + 1);	// +1 for null terminator
+						SendMessage(component_handle, (UINT)CB_GETLBTEXT, (WPARAM)index, (LPARAM)buffer.data());
+						current_selection = buffer.data();
+						OnSelect(*this);
+					}
 				}
 			}
 		}

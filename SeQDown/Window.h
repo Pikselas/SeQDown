@@ -109,14 +109,17 @@ class Window
 		unsigned int GetWidth() const;
 		bool IsOpen() const;
 		void ChangeTitle(const std::string& title);
-		void ProcessEvents() const;
+	public:
+		using EventHandler = void (&)(const HWND);
+		void ProcessEvents(EventHandler e = ProcessWindowEvents) const;
 	public:
 		constexpr static Window* ALL_WINDOWS = nullptr;
 	public:
 		void * UserSideDataPointer = nullptr;
 	public:
-		static void MainLoop(const Window* const window);
-		static void ProcessWindowEvents();
+		static void MainLoop(const Window* const window, EventHandler e = ProcessWindowEvents);
+		static void ProcessWindowEvents(const HWND handle);
+		static void ProcessWindowEventsNonBlocking(const HWND handle);
 		static int GetWindowCount();
 };
 

@@ -43,7 +43,6 @@ LRESULT Window::MessageHandler(HWND handle, UINT msgcode, WPARAM wparam, LPARAM 
 {
 	switch (msgcode)
 	{
-	break;
 	case WM_LBUTTONUP:
 	case WM_LBUTTONDOWN:
 	case WM_LBUTTONDBLCLK:
@@ -212,47 +211,44 @@ void Window::ChangeTitle(const std::string& title)
 	SetWindowText(window_handle, title.c_str());
 }
 
-void Window::ProcessEvents() const
+void Window::ProcessEvents(EventHandler e) const
 {
-	MSG msg;
-	if (PeekMessage(&msg, window_handle, 0, 0, PM_REMOVE))
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
+	e(window_handle);
 }
 
-void Window::MainLoop(const Window* const window)
+void Window::MainLoop(const Window* const window, EventHandler e)
 {
 	MSG msg;
 	if (window != nullptr)
 	{
 		while (!window->Closed)
 		{
-			if (PeekMessage(&msg, window->window_handle, 0, 0, PM_REMOVE))
-			{
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-			}
+			e(window->window_handle);
 		}
 	}
 	else
 	{
 		while (WindowCount > 0)
 		{
-			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-			{
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-			}
+			e(nullptr);
 		}
 	}
 }
 
-void Window::ProcessWindowEvents()
+void Window::ProcessWindowEvents(const HWND handle)
 {
 	MSG msg;
-	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	if (GetMessage(&msg, handle, 0, 0) > 0)
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+}
+
+void Window::ProcessWindowEventsNonBlocking(const HWND handle)
+{
+	MSG msg;
+	if (PeekMessage(&msg, handle, 0, 0, PM_REMOVE))
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);

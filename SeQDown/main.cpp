@@ -108,7 +108,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 						{
 							status.AppendText("\r\n" + *stat);
 						}
-						progress.ProcessEvents();
+						progress.ProcessEvents(Window::ProcessWindowEventsNonBlocking);
 					}
 					if (auto err = thrd.get())
 					{

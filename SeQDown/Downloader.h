@@ -8,6 +8,7 @@
 #include<thread>
 #include<mutex>
 #include<future>
+#include<atomic>
 #include"httpClient.h"
 
 class Downloader
@@ -38,12 +39,15 @@ private:
 	std::queue<std::string> StatusQueue;
 	//std::queue<std::pair<std::string,std::string>> Failed;
 private:
+	std::atomic_bool stop = false;
+private:
 	void operator()();
 public:
 	Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd ,const int useThreads = 1 , const std::string& frontLink = "", const Naming naming = Naming::SameAsURL, const std::string& name_last = "", const int count = 1);
 	~Downloader();
 public:
 	unsigned char GetProgress() const;
+	void Stop();
 	std::optional<std::string> GetStatus();
 	std::vector<std::future<std::optional<std::exception>>> Download();
 	std::optional<std::string> GetNextLink(const std::string& searchBegin ,const std::string& searchEnd);

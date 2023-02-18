@@ -67,6 +67,11 @@ unsigned char Downloader::GetProgress() const
 	return progress;
 }
 
+void Downloader::Stop()
+{
+	stop = true;
+}
+
 std::optional<std::string> Downloader::GetStatus()
 {
 	std::unique_lock<std::mutex> lock(mtx_status);
@@ -104,7 +109,7 @@ std::vector<std::future<std::optional<std::exception>>> Downloader::Download()
 
 void Downloader::operator()()
 {
-	while (true)
+	while (!stop)
 	{
 		std::string FileName;
 		std::string Link;

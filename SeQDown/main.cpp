@@ -108,14 +108,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 						{
 							status.AppendText("\r\n" + *stat);
 						}
+						/*
+						* Mainloop in main thread would not be able to see the progress window events
+						* as creating a window in a new thread also creates a new message queue
+						*/
 						progress.ProcessEvents(Window::ProcessWindowEventsNonBlocking);
 					}
-					if (auto err = thrd.get())
+					if (!progress.IsOpen())
+					{
+						downloader.Stop();
+						break;
+					}
+					else if (auto err = thrd.get())
 					{
 						MessageBox(progress.window_handle, err->what(), "Error", MB_ICONERROR);
 					}
 				}
-				MessageBox(progress.window_handle, "Completed", "Information", MB_ICONINFORMATION);
+				if (progress.IsOpen())
+				{
+					MessageBox(progress.window_handle, "Completed", "Information", MB_ICONINFORMATION);
+				}
 			}
 			catch (std::exception e)
 			{
@@ -124,6 +136,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}).detach();
 	};
 	
-	Window::MainLoop(Window::ALL_WINDOWS);
+	/*
+	*  keep alive until all windows are closed
+	*  process events for all windows created in current thread
+	*/
+	
+	while (Window::GetWindowCount() > 0)
+	{
+		if (window.IsOpen())
+		{
+			Window::ProcessWindowEvents();
+		}
+	}
 	return 0;
 }

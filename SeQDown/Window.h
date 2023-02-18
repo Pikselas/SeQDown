@@ -3,6 +3,7 @@
 #include<sstream>
 #include<bitset>
 #include<functional>
+#include<atomic>
 #include<source_location>
 #include"WindowComponent.h"
 
@@ -93,7 +94,7 @@ class Window
 		unsigned int height;
 		unsigned int width;
 		bool Closed = false;
-		static int WindowCount;
+		static std::atomic_uint WindowCount;
 	public:
 		HWND window_handle;
 	private:
@@ -118,9 +119,9 @@ class Window
 		void * UserSideDataPointer = nullptr;
 	public:
 		static void MainLoop(const Window* const window, EventHandler e = ProcessWindowEvents);
-		static void ProcessWindowEvents(const HWND handle);
-		static void ProcessWindowEventsNonBlocking(const HWND handle);
-		static int GetWindowCount();
+		static void ProcessWindowEvents(const HWND handle = nullptr);
+		static void ProcessWindowEventsNonBlocking(const HWND handle = nullptr);
+		static unsigned int GetWindowCount();
 };
 
 #define THROW_IF_FAILED(hrcall) if(HRESULT hrcode = hrcall ; FAILED(hrcode)) throw Window::Exception(hrcode)

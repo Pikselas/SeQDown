@@ -31,7 +31,7 @@ HINSTANCE Window::WindowClass::GetInstance()
 	return wndcls.hinst;
 }
 
-int Window::WindowCount = 0;
+std::atomic_uint Window::WindowCount = 0;
 
 LRESULT Window::StaticMessageHandler(HWND handle, UINT msgcode, WPARAM wparam, LPARAM lparam)
 {
@@ -255,7 +255,7 @@ void Window::ProcessWindowEventsNonBlocking(const HWND handle)
 	}
 }
 
-int Window::GetWindowCount()
+unsigned int Window::GetWindowCount()
 {
 	return WindowCount;
 }

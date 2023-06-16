@@ -5,6 +5,7 @@
 #include<functional>
 #include<atomic>
 #include<source_location>
+#include"resource.h"
 #include"WindowComponent.h"
 
 class Window

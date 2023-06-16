@@ -24,7 +24,11 @@ public:
 		
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
 		
+		// pass this pointer to callback function for access to OnData
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, this);
+
+		// redirects if needed
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
 
 		CURLcode res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);

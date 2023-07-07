@@ -1,6 +1,6 @@
 #include "Downloader.h"
 
-Downloader::Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const int useThreads, const::std::string& frontLink , const Naming naming, const std::string& name_last , const int count)
+Downloader::Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const int useThreads, const std::string& frontComponent , const std::string& backComponent, const Naming naming, const std::string& name_last , const int count)
 	: 
 dest(dest) ,
 naming(naming),
@@ -8,7 +8,8 @@ last_name(name_last),
 searchStart(searchStart),
 searchEnd(searchEnd),
 use_threads(useThreads),
-frontLink(frontLink),
+frontComponent(frontComponent),
+backComponent(backComponent),
 file_size(std::filesystem::file_size(file_path)),
 count(count)
 {
@@ -122,11 +123,7 @@ void Downloader::operator()()
 			{
 				break;
 			}
-			Link = *link;
-			if (!frontLink.empty())
-			{
-				Link = frontLink + '/' + Link;
-			}
+			Link = frontComponent + *link + backComponent;
 			switch (naming)
 			{
 			case Naming::SameAsURL:

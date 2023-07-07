@@ -47,8 +47,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	TextEntry startStr(window, 105, 160, 100, 25);
 	Label(window, "End string", 15, 195, 80, 20);
 	TextEntry endStr(window, 105, 195, 100, 25);
-	Label(window, "Front Link", 220, 160, 80, 20);
-	TextEntry frontLink(window, 230, 185, 150, 25);
+	Label(window, "Front Component", 220, 135, 150, 20);
+	TextEntry frontComponent(window, 230, 160, 150, 25);
+	Label(window, "Back Component", 220, 190, 150, 20);
+	TextEntry backComponent(window, 230, 215, 150, 25);
 
 	Label(window, "Naming Items", 10, 230, 110, 20);
 	Label(window, "Same as URL?", 50, 260, 100, 20);
@@ -89,7 +91,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				(
 					source.GetText(), destination.GetText(), startStr.GetText(), endStr.GetText(),
 					threads.GetCurrentPos(),
-					frontLink.GetText(), dropDownSelect.GetSelection() == "Yes"
+					frontComponent.GetText(), 
+					backComponent.GetText(), 
+					dropDownSelect.GetSelection() == "Yes"
 					?
 					Downloader::Naming::SameAsURL
 					:

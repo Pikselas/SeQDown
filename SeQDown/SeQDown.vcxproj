@@ -165,6 +165,8 @@
   <ItemGroup>
     <ClCompile Include="Downloader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WebClient.cpp" />
+    <ClCompile Include="WebRequest.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +180,8 @@
     <ClInclude Include="TextArea.h" />
     <ClInclude Include="TextButton.h" />
     <ClInclude Include="TextEntry.h" />
+    <ClInclude Include="WebClient.h" />
+    <ClInclude Include="WebRequest.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowComponent.h" />
     <ClInclude Include="WindowItems.h" />

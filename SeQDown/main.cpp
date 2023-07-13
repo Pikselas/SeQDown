@@ -8,7 +8,7 @@
 #include"DropDownSelect.h"
 #include"ProgressBar.h"
 
-#include"Downloader.h"
+#include"DownloadProgress.h"
 
 #include<memory>
 
@@ -83,16 +83,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	textButton3.OnClick = [&](auto)
 	{
-		std::thread([&]() 
+		std::thread([&]()
 			{
-			try 
-			{
-				Downloader downloader
+				DownloadProgress downloader
 				(
+					"Progress..",
 					source.GetText(), destination.GetText(), startStr.GetText(), endStr.GetText(),
 					threads.GetCurrentPos(),
-					frontComponent.GetText(), 
-					backComponent.GetText(), 
+					frontComponent.GetText(),
+					backComponent.GetText(),
 					dropDownSelect.GetSelection() == "Yes"
 					?
 					Downloader::Naming::SameAsURL
@@ -100,43 +99,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 					Downloader::Naming::CountStart,
 					last_name.GetText(), std::stoi(count.GetText())
 				);
-				Window progress("Progress", 400, 300);
-				ProgressBar progressBar(progress, 0, 100, 10, 10, 380, 25);
-				TextArea status(progress, 10, 40, 380, 250,false,true);
-				for (auto& thrd : downloader.Download())
-				{
-					while (!thrd._Is_ready() && progress.IsOpen())
-					{
-						progressBar.SetProgress(downloader.GetProgress());
-						if (auto stat = downloader.GetStatus())
-						{
-							status.AppendText("\r\n" + *stat);
-						}
-						/*
-						* Mainloop in main thread would not be able to see the progress window events
-						* as creating a window in a new thread also creates a new message queue
-						*/
-						progress.ProcessEvents(Window::ProcessWindowEventsNonBlocking);
-					}
-					if (!progress.IsOpen())
-					{
-						downloader.Stop();
-						break;
-					}
-					else if (auto err = thrd.get())
-					{
-						MessageBox(progress.window_handle, err->what(), "Error", MB_ICONERROR);
-					}
-				}
-				if (progress.IsOpen())
-				{
-					MessageBox(progress.window_handle, "Completed", "Information", MB_ICONINFORMATION);
-				}
-			}
-			catch (std::exception e)
-			{
-				MessageBox(window.window_handle, e.what(), "Error", MB_ICONERROR);
-			}
+				downloader.Start();
+				
 			}).detach();
 	};
 	

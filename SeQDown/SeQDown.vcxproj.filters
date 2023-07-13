@@ -80,6 +80,9 @@
     <ClInclude Include="WebClient.h">
       <Filter>Header Files\WebHost</Filter>
     </ClInclude>
+    <ClInclude Include="DownloadProgress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SeQDown.rc">

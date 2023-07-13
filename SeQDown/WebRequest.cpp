@@ -1,7 +1,5 @@
 #include "WebRequest.h"
 
-WebRequest::Initializer WebRequest::init_obj;
-
 WebRequest::Initializer::Initializer()
 {
     hdl = LoadLibrary("D:/CODINGS/with VS/SeqDownWebHost/x64/Release/SeqDownWebHost.dll");
@@ -10,8 +8,8 @@ WebRequest::Initializer::Initializer()
         throw std::runtime_error("Failed to load dll");
     }
     OnRequestPath = (void(*)(const char*, void*, void (*callback)(void*, void*)))GetProcAddress(hdl, "OnRequestPath");
-    ReadRequestBody = (int(*)(void* request, char* buffer, unsigned int size))GetProcAddress(hdl, "ReadRequestBody");
-    CloseRequest = (void(*)(void* request))GetProcAddress(hdl, "CloseRequest");
+    ReadRequestBody = (int(*)(void* , char* , unsigned int ))GetProcAddress(hdl, "ReadRequestBody");
+    CloseRequest = (void(*)(void*))GetProcAddress(hdl, "CloseRequest");
     StartServer = (void(*)())GetProcAddress(hdl, "StartServer");
 }
 

@@ -15,7 +15,7 @@ private:
         std::function<int(void*, char*, unsigned int)> ReadRequestBody;
         std::function<void(void*)> CloseRequest;
         std::function<void()> StartServer;
-    private:
+    public:
         Initializer();
         ~Initializer();
     };

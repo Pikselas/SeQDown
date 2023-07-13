@@ -1,5 +1,14 @@
 #include "WebClient.h"
 
+
+/*
+    For Some Reason the static WebRequest object is initialized before 
+    the static Initializer object (when intitalizing in WebRequest.cpp),
+    So explicitly initializing it here.
+*/
+
+WebRequest::Initializer WebRequest::init_obj;
+
 WebRequest WebClient::request
 (
 	"/get_contents", 

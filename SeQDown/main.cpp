@@ -1,21 +1,27 @@
 #include"Label.h"
 #include"Window.h"
 #include"TextEntry.h"
-#include"TextArea.h"
 #include"TextButton.h"
 #include"WindowItems.h"
 #include"RangeButton.h"
 #include"DropDownSelect.h"
 #include"ProgressBar.h"
 
+#include"WebClient.h"
 #include"DownloadProgress.h"
 
 #include<memory>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	Window window("SeQDown", 400, 450);
+
+	std::thread([]()
+	{
+		WebClient::Launch();
 	
+	}).detach();
+
+	Window window("SeQDown", 400, 450);
 	Label(window , "Select File Location", 10, 10,130, 20);
 	TextButton textButton(window, "Browse", 250, 39, 130, 25);
 	TextEntry source(window, 20, 40, 230, 25);

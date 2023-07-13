@@ -22,6 +22,7 @@ public:
 public:
 	void Start()
 	{
+		window.SetFocus();
 		try
 		{
 			for (auto& thrd : downloader.Download())

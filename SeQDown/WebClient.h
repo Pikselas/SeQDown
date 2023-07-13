@@ -7,12 +7,14 @@
 #include<thread>
 
 #include"WebRequest.h"
-#include"Downloader.h"
+#include"DownloadProgress.h"
 
 class WebClient
 {
 private:
 	static WebRequest request;
+private:
+	static void DownloadLauncher(WebRequest::reader_type read, WebRequest::closer_type close);
 public:
 	static void Launch();
 };

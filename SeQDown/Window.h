@@ -111,6 +111,7 @@ class Window
 		unsigned int GetWidth() const;
 		bool IsOpen() const;
 		void ChangeTitle(const std::string& title);
+		void SetFocus();
 	public:
 		using EventHandler = void (&)(const HWND);
 		void ProcessEvents(EventHandler e = ProcessWindowEvents) const;

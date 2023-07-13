@@ -211,6 +211,11 @@ void Window::ChangeTitle(const std::string& title)
 	SetWindowText(window_handle, title.c_str());
 }
 
+void Window::SetFocus()
+{
+	SetForegroundWindow(window_handle);
+}
+
 void Window::ProcessEvents(EventHandler e) const
 {
 	e(window_handle);

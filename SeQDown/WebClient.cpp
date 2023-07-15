@@ -78,7 +78,8 @@ void WebClient::DownloadLauncher(WebRequest::reader_type read, WebRequest::close
                 elems[1] ,elems[2] , 1 , elems[3] , elems[4] , 
                 elems[5] == "true" ? Downloader::Naming::SameAsURL 
                 : 
-                Downloader::Naming::CountStart, elems[6], elems[7] == "" ? 0 : std::stoi(elems[7])
+                Downloader::Naming::CountStart, elems[6], 
+                elems[7] == "" ? 0 : std::stoi(elems[7]), elems[8]
             );
             downloader.Start();
 

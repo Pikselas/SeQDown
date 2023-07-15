@@ -1,6 +1,6 @@
 #include "Downloader.h"
 
-Downloader::Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const int useThreads, const std::string& frontComponent , const std::string& backComponent, const Naming naming, const std::string& name_last , const int count)
+Downloader::Downloader(const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const int useThreads, const std::string& frontComponent , const std::string& backComponent, const Naming naming, const std::string& name_last , const int count , const std::string& cookie)
 	: 
 dest(dest) ,
 naming(naming),
@@ -11,7 +11,8 @@ use_threads(useThreads),
 frontComponent(frontComponent),
 backComponent(backComponent),
 file_size(std::filesystem::file_size(file_path)),
-count(count)
+count(count),
+cookie(cookie)
 {
 	file.open(file_path);
 	if (!file.is_open())
@@ -110,6 +111,8 @@ std::vector<std::future<std::optional<std::exception>>> Downloader::Download()
 
 void Downloader::operator()()
 {
+	httpClient client;
+	client.SetCookie(cookie);
 	while (!stop)
 	{
 		std::string FileName;
@@ -143,7 +146,6 @@ void Downloader::operator()()
 			{
 				auto Path = std::filesystem::path(dest) / FileName;
 				std::ofstream file(Path, std::ios::binary);
-				httpClient client;
 				client.OnData = [&](std::string_view data)
 				{
 					file << data;

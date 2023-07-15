@@ -15,14 +15,26 @@ private:
 			userdata->OnData(std::string_view(ptr, size * nmemb));
 		return size * nmemb;
 	}
+private:
+	CURL* curl;
 public:
-
+	httpClient()
+	{
+		curl = curl_easy_init();
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+	}
+	~httpClient()
+	{
+		curl_easy_cleanup(curl);
+	}
+public:
+	void SetCookie(const std::string& cookie)
+	{
+		curl_easy_setopt(curl, CURLOPT_COOKIE, cookie.c_str());
+	}
 	void Get(const std::string& url)
 	{
-		CURL* curl = curl_easy_init();
 		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-		
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
 		
 		// pass this pointer to callback function for access to OnData
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, this);
@@ -31,7 +43,6 @@ public:
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
 
 		CURLcode res = curl_easy_perform(curl);
-		curl_easy_cleanup(curl);
 		if (res != CURLE_OK)
 		{
 			throw std::runtime_error(curl_easy_strerror(res));

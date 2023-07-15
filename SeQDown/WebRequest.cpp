@@ -2,7 +2,7 @@
 
 WebRequest::Initializer::Initializer()
 {
-    hdl = LoadLibrary("D:/CODINGS/with VS/SeqDownWebHost/x64/Release/SeqDownWebHost.dll");
+    hdl = LoadLibrary("SeqDownWebHost.dll");
     if (hdl == nullptr)
     {
         throw std::runtime_error("Failed to load dll");

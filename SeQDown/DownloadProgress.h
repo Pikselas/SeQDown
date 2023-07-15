@@ -13,9 +13,9 @@ private:
 	ProgressBar progressBar;
 	TextArea status;
 public:
-	DownloadProgress(const std::string& title , const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const int useThreads, const std::string& frontComponent, const std::string& backComponent, const Downloader::Naming naming , const std::string& name_last, const int count)
+	DownloadProgress(const std::string& title , const std::string& file_path, const std::string& dest, const std::string& searchStart, const::std::string& searchEnd, const int useThreads, const std::string& frontComponent, const std::string& backComponent, const Downloader::Naming naming , const std::string& name_last, const int count , const std::string& cookie = "")
 		:
-	downloader(file_path,dest,searchStart,searchEnd,useThreads,frontComponent,backComponent,naming,name_last,count),
+	downloader(file_path,dest,searchStart,searchEnd,useThreads,frontComponent,backComponent,naming,name_last,count , cookie),
 	window(title, 400, 300),
 	progressBar(window, 0, 100, 10, 10, 380, 25),
 	status(window,10, 40, 380, 250, false, true) {}
